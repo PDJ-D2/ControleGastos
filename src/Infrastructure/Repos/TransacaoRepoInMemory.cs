@@ -1,8 +1,7 @@
-using Application.Repos;
+using Application.Interfaces;
 using Domain.Entities;
 
 namespace Infrastructure.Repos;
-
 
 // Implementação em memória do repositório de transações.
 

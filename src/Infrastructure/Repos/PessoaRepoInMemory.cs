@@ -1,4 +1,4 @@
-using Application.Repos;
+using Application.Interfaces;
 using Domain.Entities;
 
 namespace Infrastructure.Repos;
