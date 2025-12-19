@@ -4,7 +4,10 @@ using Application.Interfaces;
 using Application.Services;
 using FluentValidation;
 using FluentValidation.AspNetCore;
+using Infrastructure.Persistence;
 using Infrastructure.Repos;
+using Microsoft.EntityFrameworkCore;
+using System;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,15 +15,26 @@ var builder = WebApplication.CreateBuilder(args);
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-builder.Services.AddScoped<IPessoaRepository, PessoaRepoInMemory>();
-builder.Services.AddScoped<ICategoriaRepository, CategoriaRepoInMemory>();
-builder.Services.AddScoped<ITransacaoRepository, TransacaoRepoInMemory>();
+builder.Services.AddScoped<IPessoaRepository, PessoaRepo>();
+builder.Services.AddScoped<ICategoriaRepository, CategoriaRepo>();
+builder.Services.AddScoped<ITransacaoRepository, TransacaoRepo>();
 builder.Services.AddScoped<ListarPessoasService>();
 builder.Services.AddScoped<ListarCategoriasService>();
 builder.Services.AddScoped<ListarTransacoesService>();
 builder.Services.AddFluentValidationAutoValidation();
 builder.Services.AddValidatorsFromAssemblyContaining<CriarPessoaRequestValidator>();
+builder.Services.AddDbContext<DatabaseContext>(options => options.UseSqlite("Data Source=database.db"));
 builder.Services.AddScoped<TotaisPorPessoaService>();
+builder.Services.AddScoped<CriarPessoaService>();
+builder.Services.AddScoped<DeletarPessoaService>();
+builder.Services.AddScoped<ListarPessoasService>();
+
+builder.Services.AddScoped<CriarCategoriaService>();
+builder.Services.AddScoped<ListarCategoriasService>();
+
+builder.Services.AddScoped<CriarTransacaoService>();
+builder.Services.AddScoped<ListarTransacoesService>();
+
 builder.Services.AddControllers();
 
 var app = builder.Build();
