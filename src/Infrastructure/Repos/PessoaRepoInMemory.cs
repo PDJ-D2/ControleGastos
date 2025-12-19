@@ -5,7 +5,7 @@ namespace Infrastructure.Repos;
 
 // Implementação em memória do repositório de pessoas.
 
-public class PessoaRepoInMemory : PessoaRepo
+public class PessoaRepoInMemory : IPessoaRepository
 {
     private static readonly List<Pessoa> _pessoas = new();
 

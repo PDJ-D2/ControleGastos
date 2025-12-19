@@ -1,4 +1,4 @@
-using Application.Repos;
+using Application.Interfaces;
 using Domain.Entities;
 using Domain.Enums;
 
@@ -8,14 +8,14 @@ namespace Application.Services;
 
 public class CriarTransacaoService
 {
-    private readonly PessoaRepo _pessoaRepo;
-    private readonly CategoriaRepo _categoriaRepo;
-    private readonly TransacaoRepo _transacaoRepo;
+    private readonly IPessoaRepository _pessoaRepo;
+    private readonly ICategoriaRepository _categoriaRepo;
+    private readonly ITransacaoRepository _transacaoRepo;
 
     public CriarTransacaoService(
-        PessoaRepo pessoaRepo,
-        CategoriaRepo categoriaRepo,
-        TransacaoRepo transacaoRepo)
+        IPessoaRepository pessoaRepo,
+        ICategoriaRepository categoriaRepo,
+        ITransacaoRepository transacaoRepo)
     {
         _pessoaRepo = pessoaRepo;
         _categoriaRepo = categoriaRepo;

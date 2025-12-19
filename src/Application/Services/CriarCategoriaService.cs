@@ -1,4 +1,4 @@
-using Application.Repos;
+using Application.Interfaces;
 using Domain.Entities;
 using Domain.Enums;
 
@@ -8,9 +8,9 @@ namespace Application.Services;
 
 public class CriarCategoriaService
 {
-    private readonly CategoriaRepo _categoriaRepo;
+    private readonly ICategoriaRepository _categoriaRepo;
 
-    public CriarCategoriaService(CategoriaRepo categoriaRepo)
+    public CriarCategoriaService(ICategoriaRepository categoriaRepo)
     {
         _categoriaRepo = categoriaRepo;
     }

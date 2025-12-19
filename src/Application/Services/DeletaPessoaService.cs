@@ -1,4 +1,4 @@
-using Application.Repos;
+using Application.Interfaces;
 
 namespace Application.Services;
 
@@ -6,12 +6,12 @@ namespace Application.Services;
 
 public class DeletarPessoaService
 {
-    private readonly PessoaRepo _pessoaRepo;
-    private readonly TransacaoRepo _transacaoRepo;
+    private readonly IPessoaRepository _pessoaRepo;
+    private readonly ITransacaoRepository _transacaoRepo;
 
-    public DeletaPessoaService(
-        PessoaRepo pessoaRepo,
-        TransacaoRepo transacaoRepo)
+    public DeletarPessoaService(
+        IPessoaRepository pessoaRepo,
+        ITransacaoRepository transacaoRepo)
     {
         _pessoaRepo = pessoaRepo;
         _transacaoRepo = transacaoRepo;

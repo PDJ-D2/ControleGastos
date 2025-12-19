@@ -1,11 +1,31 @@
+using API.Middlewares;
+using API.Validators.Pessoa;
+using Application.Interfaces;
+using Application.Services;
+using FluentValidation;
+using FluentValidation.AspNetCore;
+using Infrastructure.Repos;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddScoped<IPessoaRepository, PessoaRepoInMemory>();
+builder.Services.AddScoped<ICategoriaRepository, CategoriaRepoInMemory>();
+builder.Services.AddScoped<ITransacaoRepository, TransacaoRepoInMemory>();
+builder.Services.AddScoped<ListarPessoasService>();
+builder.Services.AddScoped<ListarCategoriasService>();
+builder.Services.AddScoped<ListarTransacoesService>();
+builder.Services.AddFluentValidationAutoValidation();
+builder.Services.AddValidatorsFromAssemblyContaining<CriarPessoaRequestValidator>();
+builder.Services.AddScoped<TotaisPorPessoaService>();
+builder.Services.AddControllers();
 
 var app = builder.Build();
+
+app.UseMiddleware<ExceptionMiddleware>();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -35,6 +55,8 @@ app.MapGet("/weatherforecast", () =>
 })
 .WithName("GetWeatherForecast")
 .WithOpenApi();
+
+app.MapControllers();
 
 app.Run();
 

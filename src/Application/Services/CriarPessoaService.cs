@@ -1,4 +1,4 @@
-using Application.Repos;
+using Application.Interfaces;
 using Domain.Entities;
 
 namespace Application.Services;
@@ -7,9 +7,9 @@ namespace Application.Services;
 
 public class CriarPessoaService
 {
-    private readonly PessoaRepo _pessoaRepo;
+    private readonly IPessoaRepository _pessoaRepo;
 
-    public CriarPessoaService(PessoaRepo pessoaRepo)
+    public CriarPessoaService(IPessoaRepository pessoaRepo)
     {
         _pessoaRepo = pessoaRepo;
     }

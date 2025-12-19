@@ -5,7 +5,7 @@ namespace Infrastructure.Repos;
 
 // Implementação em memória do repositório de categorias.
 
-public class CategoriaRepoInMemory : CategoriaRepo
+public class CategoriaRepoInMemory : ICategoriaRepository
 {
     private static readonly List<Categoria> _categorias = new();
 

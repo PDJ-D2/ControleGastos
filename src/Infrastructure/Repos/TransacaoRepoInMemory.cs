@@ -5,7 +5,7 @@ namespace Infrastructure.Repos;
 
 // Implementação em memória do repositório de transações.
 
-public class TransacaoRepoInMemory : TransacaoRepo
+public class TransacaoRepoInMemory : ITransacaoRepository
 {
     private static readonly List<Transacao> _transacoes = new();
 
