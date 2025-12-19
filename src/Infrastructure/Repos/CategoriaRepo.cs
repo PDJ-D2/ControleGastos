@@ -33,4 +33,13 @@ public class CategoriaRepo : ICategoriaRepository
             .AsNoTracking()
             .FirstOrDefaultAsync(c => c.Id == id);
     }
+    public async Task DeleteAsync(Guid id)
+    {
+        var categoria = await _context.Categorias.FindAsync(id);
+        if (categoria != null)
+        {
+            _context.Categorias.Remove(categoria);
+            await _context.SaveChangesAsync();
+        }
+    }
 }

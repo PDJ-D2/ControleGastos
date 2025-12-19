@@ -43,4 +43,14 @@ public class CategoriasController : ControllerBase
             c.Finalidade
         }));
     }
+    [HttpDelete("{id:guid}")]
+    public async Task<IActionResult> Deletar(Guid id)
+    {
+        var categoria = await _categoriaRepo.GetByIdAsync(id);
+        if (categoria == null)
+            return NotFound();
+
+        await _categoriaRepo.DeleteAsync(id);
+        return NoContent();
+    }
 }

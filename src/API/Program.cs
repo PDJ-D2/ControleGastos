@@ -28,14 +28,21 @@ builder.Services.AddScoped<TotaisPorPessoaService>();
 builder.Services.AddScoped<CriarPessoaService>();
 builder.Services.AddScoped<DeletarPessoaService>();
 builder.Services.AddScoped<ListarPessoasService>();
-
 builder.Services.AddScoped<CriarCategoriaService>();
 builder.Services.AddScoped<ListarCategoriasService>();
-
 builder.Services.AddScoped<CriarTransacaoService>();
 builder.Services.AddScoped<ListarTransacoesService>();
-
 builder.Services.AddControllers();
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("DevCors", policy =>
+    {
+        policy
+            .WithOrigins("http://localhost:5173")
+            .AllowAnyHeader()
+            .AllowAnyMethod();
+    });
+});
 
 var app = builder.Build();
 
@@ -48,7 +55,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseHttpsRedirection();
+// app.UseHttpsRedirection();
 
 var summaries = new[]
 {
@@ -69,7 +76,7 @@ app.MapGet("/weatherforecast", () =>
 })
 .WithName("GetWeatherForecast")
 .WithOpenApi();
-
+app.UseCors("DevCors");
 app.MapControllers();
 
 app.Run();
