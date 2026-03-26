@@ -1,133 +1,206 @@
-Visão Geral
+## VISÃO GERAL
 
-Sistema de controle de gastos residenciais com backend em .NET 8/C# e frontend em React + TypeScript. Funcionalidades:
 
-Cadastro de pessoas (criar, listar, deletar)
+Sistema de controle de gastos residenciais com:
 
-Cadastro de categorias (criar, listar, deletar)
+-   **Backend:** .NET 8 / C#
+-   **Frontend:** React + TypeScript
 
-Cadastro de transações (criar, listar)
+## Funcionalidades
 
-Dashboard com totais por pessoa
+-   Cadastro de pessoas (criar, listar, deletar)
+-   Cadastro de categorias (criar, listar, deletar)
+-   Cadastro de transações (criar, listar)
+-   Dashboard com totais por pessoa
+-   Dashboard com totais por categoria
 
-Dashboard com totais por categoria
+## Regras de Negócio
 
-Regras de negócio:
+-   Menores de idade só podem registrar **despesas**
+-   Categorias respeitam a finalidade: **Despesa, Receita ou Ambas**
+-   Ao deletar uma pessoa, todas as suas transações são removidas
 
-Menores de idade só podem registrar despesas
+----------
 
-Categorias respeitam a finalidade (despesa/receita/ambas)
+# Estrutura de Projetos
 
-Deletar pessoa apaga todas as transações associadas
+src/  
+├─ API/                  # Backend  
+│  ├─ Controllers/       # Endpoints  
+│  ├─ DTOs/              # Data Transfer Objects  
+│  ├─ Program.cs  
+│  └─ ...  
+│  
+├─ Application/          # Lógica de negócio  
+│  ├─ Services/  
+│  ├─ Interfaces/  
+│  ├─ DTOs/  
+│  └─ ...  
+│  
+├─ Domain/               # Entidades e regras de negócio  
+│  
+├─ Infrastructure/       # Persistência (EF Core / SQLite / InMemory)  
+│  
+└─ Frontend/             # React + TypeScript  
+ ├─ src/  
+ │  ├─ pages/  
+ │  │  ├─ Pessoas.tsx  
+ │  │  ├─ Categorias.tsx  
+ │  │  ├─ Transacoes.tsx  
+ │  │  └─ Dashboard.tsx  
+ │  │  
+ │  ├─ api/  
+ │  │  ├─ pessoas.ts  
+ │  │  ├─ categorias.ts  
+ │  │  ├─ transacoes.ts  
+ │  │  └─ dashboard.ts  
+ │  │  
+ │  └─ types/  
+ │     ├─ Pessoa.ts  
+ │     ├─ Categoria.ts  
+ │     └─ Transacao.ts  
+ └─ ...
 
-Estrutura de Projetos /TT ├─ src/ │ ├─ API/ # Backend │ │ ├─ Controllers/ # Endpoints │ │ ├─ DTOs/ # Data Transfer Objects │ │ ├─ Program.cs │ │ └─ ... │ ├─ Application/ # Lógica de negócio / Services / Interfaces │ │ ├─ Services/ │ │ ├─ Interfaces/ │ │ ├─ DTOs/ │ │ └─ ... │ ├─ Domain/ # Entidades, enums, regras de negócio │ ├─ Infrastructure/ # Repositórios, persistência (InMemory ou EF Core/SQLite) │ └─ Frontend/ # React + TS │ ├─ src/ │ │ ├─ pages/ │ │ │ ├─ Pessoas.tsx │ │ │ ├─ Categorias.tsx │ │ │ ├─ Transacoes.tsx │ │ │ └─ Dashboard.tsx │ │ ├─ api/ │ │ │ ├─ pessoas.ts │ │ │ ├─ categorias.ts │ │ │ ├─ transacoes.ts │ │ │ └─ dashboard.ts │ │ └─ types/ │ │ ├─ Pessoa.ts │ │ ├─ Categoria.ts │ │ └─ Transacao.ts └─ ...
+----------
 
-Backend Requisitos
+# Backend
 
-.NET 8 SDK
+## Requisitos
 
-SQLite (ou outro DB de sua escolha)
+-   .NET 8 SDK
+-   SQLite (ou outro banco)
+-   EF Core 8
 
-EF Core 8 (já configurado no projeto)
+## Setup Inicial
 
-Setup Inicial
-
-Navegue até a pasta API:
-
-cd src/API
-
-Restaurar pacotes:
-
-dotnet restore
-
-Criar/migrar banco de dados:
-
-dotnet ef migrations add InitialCreate dotnet ef database update
-
-Rodar o backend:
-
+cd src/API  
+dotnet restore  
+dotnet ef migrations add InitialCreate  
+dotnet ef database update  
 dotnet run
 
-O backend ficará disponível em http://localhost:5110.
+Backend disponível em:  
+**[http://localhost:5110](http://localhost:5110)**
 
-Endpoints Disponíveis Recurso Método Endpoint Descrição Pessoas GET /pessoas Lista todas as pessoas Pessoas POST /pessoas Cria uma pessoa Pessoas DELETE /pessoas/{id} Deleta uma pessoa (transações também) Categorias GET /categorias Lista todas as categorias Categorias POST /categorias Cria uma categoria Categorias DELETE /categorias/{id} Deleta uma categoria Categorias GET /categorias/totais Totais por categoria Transações GET /transacoes Lista todas as transações Transações POST /transacoes Cria uma transação Dashboard GET /dashboard Totais por pessoa (receitas, despesas, saldo) Observações Importantes
+----------
 
-CriarTransacaoService converte 1 = Despesa e 2 = Receita.
+## Endpoints Disponíveis
 
-TotaisPorPessoaService retorna o objeto compatível com o front:
+### Pessoas
 
-{ "pessoas": [ { "pessoaId": "...", "nome": "...", "totalReceitas": 0, "totalDespesas": 0, "saldo": 0 } ], "totaisGerais": { "totalReceitas": 0, "totalDespesas": 0, "saldo": 0 } }
+-   `GET /pessoas` → Lista todas
+-   `POST /pessoas` → Cria
+-   `DELETE /pessoas/{id}` → Remove (com transações)
 
-Categorias respeitam o campo Finalidade (Despesa, Receita, Ambas).
+### Categorias
 
-Frontend Setup Inicial
+-   `GET /categorias` → Lista
+-   `POST /categorias` → Cria
+-   `DELETE /categorias/{id}` → Remove
+-   `GET /categorias/totais` → Totais por categoria
 
-Navegue até a pasta Frontend:
+### Transações
 
-cd src/Frontend
+-   `GET /transacoes` → Lista
+-   `POST /transacoes` → Cria
 
-Instalar dependências:
+### Dashboard
 
-npm install
+-   `GET /dashboard` → Totais por pessoa
 
-Rodar frontend:
+----------
 
+## Observações do Backend
+
+-   `1 = Despesa`, `2 = Receita` (conversão feita no backend)
+-   Categorias respeitam o campo **Finalidade**
+-   Serviço de dashboard retorna:
+
+{  
+ "pessoas": [  
+ {  
+ "pessoaId": "...",  
+ "nome": "...",  
+ "totalReceitas": 0,  
+ "totalDespesas": 0,  
+ "saldo": 0  
+ }  
+ ],  
+ "totaisGerais": {  
+ "totalReceitas": 0,  
+ "totalDespesas": 0,  
+ "saldo": 0  
+ }  
+}
+
+----------
+
+# Frontend
+
+## Setup Inicial
+
+cd src/Frontend  
+npm install  
 npm run dev
 
-O frontend ficará disponível em http://localhost:5173.
+Frontend disponível em:  
+**[http://localhost:5173](http://localhost:5173)**
 
-Estrutura de Frontend
+----------
 
-api/ → funções para consumir a WebAPI (PessoasApi, CategoriasApi, TransacoesApi, DashboardApi)
+## Estrutura
 
-types/ → interfaces Pessoa, Categoria, Transacao
+-   **api/** → consumo da API (PessoasApi, CategoriasApi, etc.)
+-   **types/** → interfaces (Pessoa, Categoria, Transacao)
+-   **pages/** → telas principais:
+    -   Pessoas
+    -   Categorias
+    -   Transações
+    -   Dashboard
 
-pages/ → telas principais: Pessoas, Categorias, Transações, Dashboard
+----------
 
-Observações
+## Observações do Frontend
 
-Eventos window.dispatchEvent(new Event("transacao-criada")) atualizam o dashboard automaticamente quando você cria uma transação.
+-   O dashboard atualiza automaticamente com:
 
-Conversão de tipo da transação (1 = despesa, 2 = receita) é feita no backend.
+window.dispatchEvent(new  Event("transacao-criada"))
 
-Todos os selects de pessoa/categoria carregam automaticamente via API.
+-   Selects de pessoa e categoria carregam via API
+-   Conversão de tipo de transação é feita no backend
 
-Como Testar
+----------
 
-Suba o backend (dotnet run)
+# Como Testar
 
-Suba o frontend (npm run dev)
+1.  Inicie o backend:
+    
+    dotnet run
+    
+2.  Inicie o frontend:
+    
+    npm run dev
+    
+3.  Testes sugeridos:
+    -   Criar pessoas (maior e menor de idade)
+    -   Criar categorias com diferentes finalidades
+    -   Criar transações
+    -   Verificar atualização do dashboard
+    -   Testar deleção de pessoas e categorias
 
-Crie algumas pessoas (maior e menor de idade)
+----------
 
-Crie categorias com diferentes finalidades
+# Boas Práticas Aplicadas
 
-Crie transações e veja o dashboard atualizar automaticamente
-
-Teste deleção de pessoas e categorias
-
-Boas Práticas Aplicadas
-
-Arquitetura limpa (Clean Architecture)
-
-Separação clara entre:
-
-Domain: entidades, regras de negócio
-
-Application: serviços e interfaces
-
-Infrastructure: repositórios e persistência
-
-API: controllers e DTOs
-
-Tipagem forte no frontend (TypeScript)
-
-Dashboard reagindo a eventos de criação de transações
-
-Validação de regras de negócio:
-
-Menor de idade → só despesas
-
-Categoria compatível com tipo da transação
-
-Comentários nos serviços explicando lógica
+-   Arquitetura limpa (**Clean Architecture**)
+-   Separação de responsabilidades:
+    -   **Domain:** regras e entidades
+    -   **Application:** serviços e interfaces
+    -   **Infrastructure:** persistência
+    -   **API:** controllers e DTOs
+-   Tipagem forte com TypeScript
+-   Validações de regras de negócio:
+    -   Menor de idade → apenas despesas
+    -   Categoria compatível com transação
+-   Dashboard reativo a eventos
+-   Código documentado com comentários nos serviços
